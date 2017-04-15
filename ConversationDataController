@@ -1,0 +1,20 @@
+class ConversationDataController {
+    
+    func getAllConversations(){
+        let jsonData = requestDataFromAPI()
+        let conversations = parseAndCreateConversationsFrom(data:jsonData)
+        saveToDatabase(conversations: conversations)
+    }
+    
+    private func requestDataFromAPI(){
+        // sends API Request to get conversations json data
+    }
+    
+    private func parseAndCreateConversationsFrom(data:Any) {
+        // Parse the data and create array of Conversation objects
+    }
+    
+    private func saveToDatabase(conversations:[Any]){
+        // save conversations to CoreDataController
+    }
+}
