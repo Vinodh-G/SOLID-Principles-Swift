@@ -38,6 +38,8 @@ I have created seperate classes for each responsiblity which ConversationDataCon
 
 ![solarized vim](https://cdn-images-1.medium.com/max/1600/1*vdkSmtvdrmVleBhiKOUrvQ.png)
 
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*3LAxPw6P6jGQmUH5Qknw5Q.png)
+
 This principle helps you to keep your classes as clean as possible, and we have a advantage of testing each and every API separately, with previous implementation we would not be able to test `requestDataFromAPI()`, `parseAndCreateConversationsFrom(data:Any)`and `saveToDatabase(conversations:[Any])` because they were private funtions inside ConversationDataController.
 
 
