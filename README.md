@@ -21,7 +21,7 @@ Lets dig in the principles one by one
 ## Single Responsiblity Principle
 > Each an every class you create/change should have only one responsibility
 
-Lets see an example explaining it, I have to develop a messenger app screen to get the list of past conversations. So I have a ConversationDataController which gets me the array of previous Conversation objects.
+Lets see an example explaining it, I have to develop a messenger app screen to get the list of past conversations. So I have a **ConversationDataController** which gets me the array of previous Conversation objects.
 
 ![solarized vim](https://cdn-images-1.medium.com/max/1600/1*mwovY8zOe6G90ZdifWXatQ.png)
 
@@ -35,6 +35,7 @@ If we have to implement NSURLSession for getting Json Data from API, and JSONSer
 we can solve this problem moving the each responsiblity down to different classes
 
 I have created seperate classes for each responsiblity which ConversationDataController was handling, after segregating this is how our classes looks
+
 ![solarized vim](https://cdn-images-1.medium.com/max/1600/1*vdkSmtvdrmVleBhiKOUrvQ.png)
 
 This principle helps you to keep your classes as clean as possible, and we have a advantage of testing each and every API separately, with previous implementation we would not be able to test `requestDataFromAPI()`, `parseAndCreateConversationsFrom(data:Any)`and `saveToDatabase(conversations:[Any])` because they were private funtions inside ConversationDataController.
@@ -42,32 +43,67 @@ This principle helps you to keep your classes as clean as possible, and we have 
 
 ---
 
-Open Close Principle
-Classes and Modules should be open for extension but closed for modification
+## Open Close Principle
+> Classes and Modules should be open for extension but closed for modification
+
 Strive to write code that doesnt have to change everytime the requirements change.
+
 To understand this principle easily lets take a basic example of calculating the area of geometry shape.
-Lets say we have requirement to calculate area of rectangle, so the rectangle and related area calculator class looks like shown below
-Now the requirement has come to calculate area of not only Rectangle even for Circle, so our AreaCalculator class will look somthing like 
+
+Lets say we have requirement to calculate area of rectangle, so the **Rectangle** and related **AreaCalculator** class looks like shown below
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*pz2kvaDqYsO5rPDLi1LSBg.png)
+
+Now the requirement has come to calculate area of not only Rectangle even for Circle, so our AreaCalculator class will look something like 
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*ylE1fuKzce20hoqjWe2w4A.png)
+
 This will work but what if tomorrow one more requirement comes to calculate area of Triangle, the area funtion inside AreaCalculator class keeps growing with if else conditions, according to Open Close Principle we should not modify the existing class rather extent it.
+
 One way of solving this problem is create a protocol (which is similar to Interface in Java) called Shape and declare area protocol method, implement the Shape protocols inside Rectangle or Circle or any other geometirc shape class, if it is confusing still may be checking the code below may clear it.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*aq6r9bLOP08r2ChbRzpWgw.png)
+
 so if there is requiremnt tomorrow to calculate the area of even Triangle, we should be able to achive it without modifying the existing AreaCalculator class just by extending the Shape Protocol for Triangle, This obeys the SOLID Open Close Principle.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*afyrhL04fXt3qpsXj-Vw9A.png)
+
 Lets see some real world example for Open Close Principle, suppose we have a requirement to calculate diffrent discount values for different customers say between normal and premium customers, applying OCP the classes architecture will look somthing like as shown below
 
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*xuNdP7YnugEmKPOHS1PXNQ.png)
 
 ---
 
-Liskov’s Subsitution Principle 
-Child classes should never break the parent class type definitions 
+## Liskov’s Subsitution Principle 
+> Child classes should never break the parent class type definitions 
+
 It means, we must make sure that new derived classes should extend the base classes without changing the base class behavior
+
 As simple as, a subclass should override the parent class methods in a way that doesnt break the funtionality of base class from client point of view.
-Lets see this with an example, we have two classes Rectangle and Square since Square is also a form of Rectangle, so Square is subclass of Rectangle
+
+Lets see this with an example, we have two classes **Rectangle** and **Square** since Square is also a form of Rectangle, so Square is subclass of Rectangle
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*PF_LSEmGTgvhDZ4kquYy3g.png)
+
 Here in the above block Square inherits the width and height property from Rectangle and overrides the width and height property to return the same height and width since it is Square.
-Since our requirement is to calculate the area of Rectangle and Square, we will to use the AreaCalculator class.
+Since our requirement is to calculate the area of Rectangle and Square, we will to use the **AreaCalculator** class.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*obMQ4CsQm2eDYpEjet1wwQ.png)
+
 Lets go a head and write Unit test cases to calulate the area of Rectangle and Square
-In above both test cases should pass since we have used instance of Rectangle to find area of retangle and instance of Square to find area of sqauare, now lets go a head and create a test case in which we will try to substitute object of Rectangle with object of Square, since Square inherits from Rectangle we should be able to find area of rectangle with Square instance.
-In the above test case we have used instance of Square class to find the area of rectangle, since square inherits from Rectangle, but its very unfortunate that the above test case fails, the AreaCalculator returns the value of 16, were as the expected area was 12, this violates the Liskov’s Principle of Derived class (Square) breaking the parent class (Rectangle) funtionality of caluculating the area.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*C7PDlBAW-MSFg6CHSuBvng.png)
+
+In above both test cases should pass since we have used instance of **Rectangle** to find area of retangle and instance of **Square** to find area of sqauare, now lets go a head and create a test case in which we will try to substitute object of Rectangle with object of Square, since Square inherits from Rectangle we should be able to find area of rectangle with Square instance.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*BnySXUeUCeZujzyIMdEjlA.png)
+
+In the above test case we have used instance of Square class to find the area of rectangle, since square inherits from Rectangle, but its very unfortunate that the above test case fails, the AreaCalculator returns the value of **16**, were as the expected area was **12**, this violates the Liskov’s Principle of Derived class (Square) breaking the parent class (Rectangle) funtionality of caluculating the area.
 We can solve this problem breaking the inheritance 
-The solution seems similar to Open Close Principle, so based on above example we can conclude that violating Liskov’s Priciple violates Open Close Priciple as well. 
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*b2cdsBeh783n45sE7dBa-g.png)
+
+The solution seems similar to Open Close Principle, so based on above example we can conclude that violating **Liskov’s Principle** violates Open Close Principle as well. 
 
 
 ---
