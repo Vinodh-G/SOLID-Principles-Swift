@@ -2,7 +2,7 @@
 SOLID is a mnemonic acronym named by Robert C. Martin used in Software Programming, It represents 5 principles of Object Oriented Programming.
 - **S**ingle Responsibility Principle 
 - **O**pen Closed
-- **L**iskov Subsititution 
+- **L**iskov's Subsititution 
 - **I**nterface Segregation
 - **D**ependency Inversion 
 
