@@ -108,15 +108,39 @@ The solution seems similar to Open Close Principle, so based on above example we
 
 ---
 
-The Interface Segregation Principle
-Make fine grained interface that are client specific
+## The Interface Segregation Principle
+> Make fine grained interface that are client specific
+
 This principle solves FAT interface problems of Object Oriented Programming
+
 A interface is called FAT when it has too many methods which contains more information than we really want.
-Lets understand Fat Interface in Protocols with an example, we have a GestureProtocol with the method didTap: which a View would be using it to handle the Gesture
+
+Lets understand **Fat Interface in Protocols** with an example, we have a GestureProtocol with the method didTap: which a View would be using it to handle the Gesture
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*oPafL4wY5Y6IX1KenL4R_Q.png)
+
 After sometime as usual the requirement came to handle more gesture like didDoubleTap: and didLongPress: so our GestureProtocol becomes
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*cZh1h-LubEhAabxW_VLxjg.png)
+
 Again as usual not all the Views in our app requires all the gestures some View would require only didTap: gesture in that case our UserDetailView class which would need only didTap: gesture would look like 
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*bPSrS2T_4ouPk8DGW_Tl_g.png)
+
 We can solve the problem using little protocols instead of a big ones, the below code snippet shows segregation of Gesture protocols into small ones
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*Xv3AJClspHSuRtPvXtEffw.png)
+
 Other way we can solve this problem in swift 3.0 is using @objc key before the protocol declarations and protocol methods, which in turn gives us a options to declare a protocol method as optional, who ever wants can implement, the below code snippet shows the same.
-Now lets dig into Fat Interface in Classes with an example, we have view in our app which displays the user profile photo, the two classes User and UserProfileImageView classes looks like shown below.
-Observing closely the above snippet, the UserProfileImageView’s loadProfileFor(user:User) function requires only the profileImageURL details, but unfortunately we are injecting too many informations in it, we can solve this problem using UserProfileViewDetails protocol which just has the information required by UserProfileImageView’s loadProfileFor(user:User), the below code will explain you detail.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*68NKscKI01sLPMNkHj7GwQ.png)
+
+Now lets dig into **Fat Interface in Classes** with an example, we have view in our app which displays the user profile photo, the two classes **User** and **UserProfileImageView** classes looks like shown below.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*C8gyX1r997jVX9Oe_a8tJA.png)
+
+Observing closely the above snippet, the **UserProfileImageView’s loadProfileFor(user:User)** function requires only the profileImageURL details, but unfortunately we are injecting too many informations in it, we can solve this problem using UserProfileViewDetails protocol which just has the information required by UserProfileImageView’s loadProfileFor(user:User), the below code will explain you detail.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*Qsk_ivU7BE3SAFJJlZb6HQ.png)
+
 Now the UserProfileImageView’s loadProfileFor(user:UserProfileViewDetails)  which is the client has only the profileImageURL information with it to display the User Profile Image, which agrees with the Interface Segregation Principle
