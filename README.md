@@ -1,4 +1,8 @@
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*yp26JLwcouiuALmhqfCTOg.png)
+
 # SOLID Principles in Swift
+
 SOLID is a mnemonic acronym named by Robert C. Martin used in Software Programming, It represents 5 principles of Object Oriented Programming.
 - **S**ingle Responsibility Principle 
 - **O**pen Closed
