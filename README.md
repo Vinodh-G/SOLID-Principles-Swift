@@ -146,3 +146,38 @@ Observing closely the above snippet, the **UserProfileImageView’s loadProfileF
 ![solarized vim](https://cdn-images-1.medium.com/max/1600/1*Qsk_ivU7BE3SAFJJlZb6HQ.png)
 
 Now the UserProfileImageView’s loadProfileFor(user:UserProfileViewDetails)  which is the client has only the profileImageURL information with it to display the User Profile Image, which agrees with the Interface Segregation Principle
+
+
+---
+
+## The Dependency Inversion Principle
+>High level modules should not depend on low level modules both should depend on Abstractions
+
+Lets Consider the class **ConversationDataContoller** which we used in **Single Responsibility Principle**
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*wIhU6GUVnqpqn6Dd33DQYg.png)
+
+here the CoreDataController is a low level module, its easy to reuse in other projects, the problem is with high level module ConversationDataController, its tightly coupled with CoreDataController.
+
+Lets discuss this in detail, as I have mentioned earlier the ConversationDataController is used in the Messenger App to get the previous conversations json, parse it, and save to Core Data Database, so it can use the previous conversations to display it offline as well in the Messenger App, now new requirement from a client or product team came like can we use the same ConversationDataContoller from Messenger App into another App,  with little change something like use **File System Archiving** instead of Core Data for saving the previous conversations.
+
+In that case we cannot use the  ConversationDataContoller into another app easily because it is tightly coupled with CoreDataController or in other words it has a dependecy in low level module CoreDataController.
+
+We can solve this dependency using a **Database Protocol**. In this way ConversationDataController can use abstract protocol without caring for type of database used, lets see how the ConversationDataController will look after applying this.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*zSTEV_3Vmg14Oj5U1yetLQ.png)
+
+Now you can reuse the ConversationDataController without any hazzle or hectic into another App which uses File Sytem Archiving for database, just by including the FileSystemArchiving class as shown below.
+
+![solarized vim](https://cdn-images-1.medium.com/max/1600/1*dd3oCQH8B8EnhsPdeTywZA.png)
+
+---
+
+## Quick Summary
+- Each an every class should have only one responsibility
+- Should not modify the existing class for change requirement, rather extent the class
+- Extending or Inheriting a child/derived class should not break any parent or base class functionality
+- The Interface or class API’s to client should have minimum information required by the client
+- Class A should not depend on Class B or vice versa, both should be losely coupled 
+
+`Use SOLID principles as your weapon in the war of coding :)`
