@@ -25,9 +25,9 @@ Lets dig in the principles one by one
 ## Single Responsiblity Principle
 > Each an every class you create/change should have only one responsibility
 
-Lets see an example explaining it, I have to develop a messenger app screen to get the list of past conversations. So I have a **ConversationDataController** which gets me the array of previous Conversation objects.
+Let us see an example explaining it, I have to develop a messenger app screen to get the list of past conversations. So I have a ConversationInteractor which gets me the array of previous conversations.
 
-![solarized vim](https://cdn-images-1.medium.com/max/1600/1*mwovY8zOe6G90ZdifWXatQ.png)
+![solarized vim](https://miro.medium.com/max/700/1*Em9aJGoMTJ9jgkYWx5W1fA.png)
 
 How many responsiblity does this class have ? 
 - Gets the conversation data form the API
@@ -40,11 +40,10 @@ we can solve this problem moving the each responsiblity down to different classe
 
 I have created seperate classes for each responsiblity which ConversationDataController was handling, after segregating this is how our classes looks
 
-![solarized vim](https://cdn-images-1.medium.com/max/1600/1*vdkSmtvdrmVleBhiKOUrvQ.png)
+![solarized vim](https://miro.medium.com/max/2400/1*4kwFCldGN_iw2Bx56Wuotg.png)
 
-![solarized vim](https://cdn-images-1.medium.com/max/1600/1*3LAxPw6P6jGQmUH5Qknw5Q.png)
-
-This principle helps you to keep your classes as clean as possible, and we have a advantage of testing each and every API separately, with previous implementation we would not be able to test `requestDataFromAPI()`, `parseAndCreateConversationsFrom(data:Any)`and `saveToDatabase(conversations:[Any])` because they were private funtions inside ConversationDataController.
+This principle helps you to keep your classes as clean as possible, and we have a advantage of testing each and every API separately, with previous implementation we would not be able to test `fetchRemoteConversationJsonData()`, `convertJsonToConversation(data:Any)`and `saveToDatabase(conversations:[Any])` because they were private functions inside ConversationInteractor. Now it seems we can test each an every pieces (`ConversationInteractor`, `RemoteService`, `ConversationDBOperation`) separately.
+As we can see all the 3 classes are connected via a protocol, which can be easily decoupled, we would be covering this topic in detail further.
 
 
 ---
@@ -74,9 +73,32 @@ so if there is requiremnt tomorrow to calculate the area of even Triangle, we sh
 
 ![solarized vim](https://cdn-images-1.medium.com/max/1600/1*afyrhL04fXt3qpsXj-Vw9A.png)
 
-Lets see some real world example for Open Close Principle, suppose we have a requirement to calculate diffrent discount values for different customers say between normal and premium customers, applying OCP the classes architecture will look somthing like as shown below
+Thats a very common example for understanding the principle of not modifying the working class, lets see some real world example for Open Close Principle, very common example which we use on most of case when showing some data on UITableView, say we have requirement to show list of products and ads in the ListView or TableView, the ViewController or ActivityController would look something like as shown below.
 
-![solarized vim](https://cdn-images-1.medium.com/max/1600/1*xuNdP7YnugEmKPOHS1PXNQ.png)
+![solarized vim](https://miro.medium.com/max/2400/1*686zJ6lmZBn1T0EpBS_Z_Q.png)
+
+Looks like something similar to our old AreaCalculator problem right, say suppose if we need to display new type cell called SuggestionCell, we need to go and change the existing ListViewController handling the new type of cell, this ListViewController is not obeying the OCP.
+Now let’s apply OCP to our ListViewController, the class should be opened for extension and closed for modification, which means we should not modify the ListViewController but should be able to support new types of cells.
+Let’s create protocol SectionHandler which has method related to creating a UITableViewCell and sectionType property, SectionContainer which handles all the types of SectionHandlers.
+
+![solarized vim](https://miro.medium.com/max/700/1*gcJif1sAG-5A_kqVb9buoA.png)
+
+If we checkout the above snippet, can see the SectionContainer picks respective SectionHandler based on the cellModel type and calls tableView related method asking for UITableViewCell, which means we should be having the SectionHandlers w.r.t. the use case, here in our case its ProductSectionHandler and AdSectionHandler, both confirming to SectionHandler protocol.
+
+![solarized vim](https://miro.medium.com/max/2400/1*rM4PdGGRCTRjtuDd6AI6Qg.png)
+
+Okay its kind of confusing right, now let’s see our original `ListViewController` which is obeying to OCP, so we can understand it better.
+
+![solarized vim](https://miro.medium.com/max/700/1*6i9PUH4yy6S1sEvckFc1cw.png)
+Oh yea we don’t have if else statement in the `tableView:cellForRow indexPath` function, how is the ListViewController created? well checkout below.
+![solarized vim](https://miro.medium.com/max/700/1*AbNEP7z6s7BTR31GUIr5wg.png)
+
+Now kind of convinced? No!! ok prove me if we add new SuggestionCell to list how it will look, ok let’s see below.
+![solarized vim](https://miro.medium.com/max/700/1*EXkI4Tbd5UHssM5chZIWew.png)
+
+Kind of agreeing now? we didn’t change the existing class ListViewController for supporting new SuggestionCell, we just created the new SuggestionSectionHandler class confirming to SectionHandler for supporting the new SuggestionCell.
+Pictorial representation of Open Close Principle in brief shot.
+![solarized vim](https://miro.medium.com/max/700/1*tTTjovZDafmWd7m7h3N0bg.png)
 
 ---
 
